@@ -1,0 +1,75 @@
+{
+
+  "machine": {
+
+    "gpu": 0,
+
+    "cpu": 1000,
+
+    "ram": 100
+
+  },
+
+  "job": {
+
+    "APIVersion": "V1beta1",
+
+    "Spec": {
+
+      "Deal": {
+
+        "Concurrency": 1
+
+      },
+
+      "Docker": {
+
+        "Entrypoint": [
+
+          "/bin/sh",
+
+          "-c",
+
+          "/usr/games/cowsay \"$MESSAGE\""
+
+        ],
+
+        "EnvironmentVariables": [
+
+          {{ if .Message }}"{{ subst "MESSAGE=%s" .Message }}"{{else}}"Message=Hello World"{{ end }}
+
+        ],
+
+        "Image": "lilypadnetwork/lilysay:0.0.6@sha256:9dea5ce25fce2cb0b53729b7aeabd139951a21356c63a11922a58b1d199050cd"
+
+      },
+
+      "Engine": "Docker",
+
+      "Network": {
+
+        "Type": "None"
+
+      },
+
+      "PublisherSpec": {
+
+        "Type": "IPFS"
+
+      },
+
+      "Resources": {
+
+        "GPU": ""
+
+      },
+
+      "Timeout": 1800,
+
+      "Verifier": "Noop"
+
+    }
+
+  }
+
+}
