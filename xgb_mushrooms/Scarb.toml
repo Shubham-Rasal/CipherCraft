@@ -1,6 +1,0 @@
-[package]
-name = "xgb_mushrooms"
-version = "0.1.0"
-
-[cairo]
-enable-gas = false
