@@ -1,2 +1,3 @@
 # FedSpace
-A d
+A decentralised federated learning platform
+
