@@ -24,23 +24,7 @@
 
       "Docker": {
 
-        "Entrypoint": [
-
-          "/bin/sh",
-
-          "-c",
-
-          "/usr/games/cowsay \"$MESSAGE\""
-
-        ],
-
-        "EnvironmentVariables": [
-
-          {{ if .Message }}"{{ subst "MESSAGE=%s" .Message }}"{{else}}"Message=Hello World"{{ end }}
-
-        ],
-
-        "Image": "lilypadnetwork/lilysay:0.0.6@sha256:9dea5ce25fce2cb0b53729b7aeabd139951a21356c63a11922a58b1d199050cd"
+        "Image": "shubhamrasal007/fedspace:model:@sha256:1e00d1af1f68ce4a9042435cc4bc0dabfdf0732dd1673177b6187890213c5387"
 
       },
 

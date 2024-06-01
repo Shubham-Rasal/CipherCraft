@@ -47,20 +47,24 @@ cp "$REQUIREMENTS_FILE" "$BUILD_CONTEXT/"
 # Create a Dockerfile in the build context
 cat > "$BUILD_CONTEXT/Dockerfile" <<EOF
 # Use the official Python image from the Docker Hub
-FROM python:3.8-slim
+FROM python:3.11.0
 
 # Set the working directory
-WORKDIR /app
+# WORKDIR /app
 
 # Copy the Python script and requirements file into the container
-COPY $PYTHON_FILE_BASENAME.py .
 COPY $(basename "$REQUIREMENTS_FILE") .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r $(basename "$REQUIREMENTS_FILE")
 
+COPY $PYTHON_FILE_BASENAME.py .
+
+#entrypoint
+ENTRYPOINT ["python", "$PYTHON_FILE_BASENAME.py"]
+
 # Run the Python script with the dataset URL as an argument
-CMD ["python", "$PYTHON_FILE_BASENAME.py", "$DATASET_URL"]
+CMD ["$DATASET_URL"]
 EOF
 
 # Build the Docker image

@@ -10,7 +10,7 @@ const web3PrivateKey = process.env.WEB3_PRIVATE_KEY || 'your_web3_private_key_he
 // Prepare the request payload
 const payload = {
   pk: web3PrivateKey,
-  module: "github.com/lilypad-tech/lilypad-module-lilysay:0.1.0",
+  module: "github.com/lilypad-tech/lilypad-module-lilysay:0.5.1",
   inputs: "-i Message=test"
 };
 
