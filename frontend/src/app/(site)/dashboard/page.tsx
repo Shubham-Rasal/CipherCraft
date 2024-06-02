@@ -7,25 +7,22 @@ import { useState } from "react";
 
 export default function Dashboard() {
   const [params, setParams] = useState<string>("");
-  
+  const [result, setResult] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
+    setLoading(true);
     let headersList = {
       Accept: "*/*",
-      "User-Agent": "Thunder Client (https://www.thunderclient.com)",
       "Content-Type": "application/json",
     };
-
-    let bodyContent = JSON.stringify({
-      args: "[2 2 2 0 8 1 0 1 0 1 0 2 2 6 6 2 1 0 7 4 2]",
-    });
 
     try {
       let response = await fetch(
         "https://endpoint-taz-650-4-6bb92af8-7i3yxzspbq-ew.a.run.app/cairo_run",
         {
           method: "POST",
-          body: bodyContent,
+          body: params,
           headers: headersList,
           mode: "no-cors",
         }
@@ -33,18 +30,12 @@ export default function Dashboard() {
 
       let data = await response.json();
       console.log(data);
+      setResult(data.result > 0.5 ? "Poisonous" : "Edible");
+      setLoading(false);
     } catch (error) {
-
-        // //send this default response
-        // {
-        //     "result": "316758",
-        //     "request_id": "bf1ddfabf15345b4a80f25a6067179b8"
-        //   }
-
+      // //send this default response
       console.log("Error:", error);
-
-      
-
+      setLoading(false);
     }
   };
 
@@ -81,8 +72,16 @@ export default function Dashboard() {
                 onChange={(e) => setParams(e.target.value)}
               />
               <Button variant="outline" onClick={handleSubmit}>
-                Run Inference
+                {loading ? "Loading..." : "Run Inference"}
               </Button>
+              <div className="result">
+                <span className="font-semibold">Result:</span>{" "}
+                {result === "Edible" ? (
+                  <span className="text-green-500">{result}</span>
+                ) : (
+                  <span className="text-red-500">{result}</span>
+                )}
+              </div>
             </div>
           </div>
           <div className="flex flex-col lg:flex-row bg-white text-sm p-2 relative dark:bg-gray-950">

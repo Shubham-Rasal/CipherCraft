@@ -14,7 +14,7 @@ export default function SidebarLayout({
         <div className="space-y-4  ">
           <div className="bg-white text-gray-900">
             <Link
-              href="#"
+              href="/"
               className="flex items-center gap-2 font-bold text-lg"
               prefetch={false}
             >
