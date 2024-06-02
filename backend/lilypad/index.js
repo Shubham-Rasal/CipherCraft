@@ -10,7 +10,7 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Setup body parser for parsing JSON requests
 app.use(bodyParser.json());
