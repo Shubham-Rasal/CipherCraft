@@ -5,7 +5,7 @@ import { JSX, SVGProps, useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
 import Loading from "./loading"
-import {encryptRunServerMode} from "@/lib/litHelper"
+import { encryptRunServerMode } from "@/lib/litHelper"
 
 export default function Dashboard() {
 
@@ -45,6 +45,20 @@ export default function Dashboard() {
 
         const message = res.data.IpfsHash;
         console.log(message);
+
+        // const uploadformData = new FormData();
+
+        // uploadformData.append('file', acceptedFiles[0]);
+
+        // const uploadRes = await axios.post("/api/upload", formData, {
+        //   headers: {
+        //     'Content-Type': `multipart/form-data`,
+        //   }
+        // });
+
+        // if(uploadRes.status === 200) {
+
+        // }
 
         const { ciphertext, dataToEncryptHash } = await encryptRunServerMode(message)
 
