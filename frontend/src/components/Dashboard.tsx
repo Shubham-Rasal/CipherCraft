@@ -122,157 +122,118 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className="bg-gray-900 text-white p-6 hidden md:block w-64 shrink-0">
-        <div className="space-y-4">
-          <Link
-            href="#"
-            className="flex items-center gap-2 font-bold text-lg"
-            prefetch={false}
-          >
-            <Grid3x3Icon className="w-6 h-6" />
-            <span>ML Deployment</span>
-          </Link>
-          <nav className="space-y-2">
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              prefetch={false}
-            >
-              <Grid3x3Icon className="w-5 h-5" />
-              <span>Dashboard</span>
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              prefetch={false}
-            >
-              <LayersIcon className="w-5 h-5" />
-              <span>Deploy Models</span>
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              prefetch={false}
-            >
-              <DatabaseIcon className="w-5 h-5" />
-              <span>Upload Datasets</span>
-            </Link>
-          </nav>
-        </div>
-      </div>
-      <div className="flex-1 bg-gray-100 dark:bg-gray-950 p-6">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Deploy Model</h1>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="name">Docker Hub Repo</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="name"
-                        placeholder="Enter your repo name"
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="requirements"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Requirements</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept=".txt"
-                          placeholder="requirements.txt"
-                          {...requirementsRef}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
 
-              <FormField
-                control={form.control}
-                name="model"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Python Model File</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept=".py"
-                          placeholder="model.py"
-                          {...modelRef}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="dataset"
-                render={({ field }) => (
+    <>
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">Deploy Model</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Docker Hub Repo</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="name"
+                      placeholder="Enter your repo name"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="requirements"
+              render={({ field }) => {
+                return (
                   <FormItem>
-                    <FormLabel htmlFor="dataset">Dataset URL</FormLabel>
+                    <FormLabel>Requirements</FormLabel>
                     <FormControl>
                       <Input
-                        id="dataset"
-                        placeholder="Enter your dataset name"
-                        {...field}
+                        type="file"
+                        accept=".txt"
+                        placeholder="requirements.txt"
+                        {...requirementsRef}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )}
-              />
-              {form.formState.errors && (
-                <div className="text-destructive text-sm">
-                  {Object.values(form.formState.errors).map((error) => (
-                    <p key={error.message}>{error.message}</p>
-                  ))}
-                </div>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="model"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Python Model File</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept=".py"
+                        placeholder="model.py"
+                        {...modelRef}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="dataset"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="dataset">Dataset URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="dataset"
+                      placeholder="Enter your dataset name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              <Button type="submit" className="w-full" disabled={deploying}>
-                {deploying ? "Deploying..." : "Deploy"}
-              </Button>
-            </form>
-          </Form>
-        </div>
-        <div className="">
-          {deploying && (
-            <div className="bg-gray-200 p-4 rounded mt-4">
-              <p>Deploying your model...</p>
-              <p>Image Name: {imageName}</p>
-            </div>
-          )}
-          {deployed && (
-            <div className="">
-              <h1>
-                This is the custom lily job template that you can use to deploy.
-              </h1>
-              <pre>
-                <code>{JSON.stringify(template, null, 2)}</code>
-              </pre>
-            </div>
-          )}
-        </div>
+            />
+            {form.formState.errors && (
+              <div className="text-destructive text-sm">
+                {Object.values(form.formState.errors).map((error) => (
+                  <p key={error.message}>{error.message}</p>
+                ))}
+              </div>
+            )}
+            <Button type="submit" className="w-full" disabled={deploying}>
+              {deploying ? "Deploying..." : "Deploy"}
+            </Button>
+          </form>
+        </Form>
       </div>
-    </div>
+      <div className="">
+        {deploying && (
+          <div className="bg-gray-200 p-4 rounded mt-4">
+            <p>Deploying your model...</p>
+            <p>Image Name: {imageName}</p>
+          </div>
+        )}
+        {deployed && (
+          <div className="">
+            <h1>
+              This is the custom lily job template that you can use to deploy.
+            </h1>
+            <pre>
+              <code>{JSON.stringify(template, null, 2)}</code>
+            </pre>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
