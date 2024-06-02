@@ -31,6 +31,7 @@ VERSION_ID = 4  # Update with your version ID
 
 def prediction(input, model_id, version_id):
     model = GizaModel(id=model_id, version=version_id)
+    print(input, input.shape, type(input))
 
     (result, proof_id) = model.predict(
         input_feed={"input": input}, verifiable=True, model_category="XGB"
@@ -43,9 +44,6 @@ def execution():
     # The input data type should match the model's expected input
     # X_test = X_test.to_numpy()
     input = X_test[1, :]
-    print(type(input), type(X_test), type(x))
-    print(input.shape, X_test.shape, x.shape)
-
 
     (result, proof_id) = prediction(input, MODEL_ID, VERSION_ID)
 
