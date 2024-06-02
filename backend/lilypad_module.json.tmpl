@@ -1,0 +1,59 @@
+{
+
+  "machine": {
+
+    "gpu": 0,
+
+    "cpu": 1000,
+
+    "ram": 100
+
+  },
+
+  "job": {
+
+    "APIVersion": "V1beta1",
+
+    "Spec": {
+
+      "Deal": {
+
+        "Concurrency": 1
+
+      },
+
+      "Docker": {
+
+        "Image": "shubhamrasal007/fedspace:model:@sha256:1e00d1af1f68ce4a9042435cc4bc0dabfdf0732dd1673177b6187890213c5387"
+
+      },
+
+      "Engine": "Docker",
+
+      "Network": {
+
+        "Type": "None"
+
+      },
+
+      "PublisherSpec": {
+
+        "Type": "IPFS"
+
+      },
+
+      "Resources": {
+
+        "GPU": ""
+
+      },
+
+      "Timeout": 1800,
+
+      "Verifier": "Noop"
+
+    }
+
+  }
+
+}
