@@ -3,9 +3,16 @@
 ![image](https://github.com/Shubham-Rasal/CipherCraft/assets/95695273/d0000318-42ca-46bb-8441-3822b9e39761)
 
 # FedSpace
-A decentralised federated learning platform
-v0.1.0-396c092
 
+A Decentralised Hub for federated model training on access controlled private datasets.
+
+## What is FedSpace?
+
+The project aims to simplify the process of training models on private datasets. These datasets can have custom access control conditions which enable specific type of users or model providers to use this private datasets. 
+
+The projects automates the process of deploying ml model scripts by auto-containering them, training the models on a compute network, saving the models weights on IPFS nodes. 
+
+In addition to these, the platform also hosts the ml models as an REST endpoints that can be used for inference and verify model correctness through zkML.
 
 filecoin
 

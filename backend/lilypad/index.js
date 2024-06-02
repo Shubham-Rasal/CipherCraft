@@ -6,6 +6,8 @@ const path = require('path');
 const { exec } = require('child_process');
 const os = require('os');
 const util = require('util');
+//cors
+const cors = require('cors');
 
 const execPromise = util.promisify(exec);
 
@@ -15,6 +17,8 @@ const port = 5000;
 // Setup body parser for parsing JSON requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+//cors
+app.use(cors());
 
 // Setup multer for file uploads
 const upload = multer({ dest: 'uploads/' });
@@ -70,10 +74,10 @@ app.post('/build', upload.fields([
         console.log("Pushing Docker image:", imageName);
         await execPromise(`docker push ${imageName}`);
 
-        res.send(`Docker image has been pushed to Docker Hub: ${imageName}`);
+        res.json({ imageName });
     } catch (error) {
         console.error("Error during Docker build/push:", error);
-        res.status(500).send("Error during Docker build/push");
+        res.status(500).json({ error: error.message });
     } finally {
         // Cleanup build context
         fs.rmSync(buildContext, { recursive: true, force: true });
