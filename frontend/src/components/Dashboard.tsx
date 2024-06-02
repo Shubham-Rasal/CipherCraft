@@ -27,6 +27,7 @@ import {
   FormField,
 } from "@/components/ui/form";
 import { useState } from "react";
+import { useBalance } from "wagmi";
 
 const formSchema = z.object({
   name: z.string().min(1, "Repo name is required"),
@@ -82,6 +83,7 @@ export default function Dashboard() {
   const [deploying, setDeploying] = useState(false);
   const [imageName, setImageName] = useState("");
   const [deployed, setDeployed] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,13 +123,39 @@ export default function Dashboard() {
       });
   }
 
-  return (
+  const handleVerify = async () => {
+    try {
+      setVerifying(true);
 
+      const metadata = await fetch(
+        "https://gateway.lighthouse.storage/ipfs/QmSiVp36NpUQaJwSWv2wHDB1FofF8nxAkeyhQXom3LikVf",
+        // "/api/health"
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await metadata.json();
+      console.log(data);
+
+      const access = data.access;
+      if (access === "public") {
+        console.log("Public dataset");
+        setVerifying(false);
+      }
+      console.log(access);
+    } catch (error) {
+      console.log("Error:", error);
+      setVerifying(false);
+    }
+  };
+
+  return (
     <>
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Deploy Model</h1>
+        <h1 className="text-3xl font-bold mb-2">Deploy Model</h1>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="name"
@@ -202,6 +230,14 @@ export default function Dashboard() {
                 </FormItem>
               )}
             />
+            <Button
+              onClick={handleVerify}
+              disabled={verifying}
+              className="badge bg-green-500 text-white p-2 rounded-md w-fit"
+            >
+              Verify Dataset
+            </Button>
+
             {form.formState.errors && (
               <div className="text-destructive text-sm">
                 {Object.values(form.formState.errors).map((error) => (
@@ -209,6 +245,7 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
+
             <Button type="submit" className="w-full" disabled={deploying}>
               {deploying ? "Deploying..." : "Deploy"}
             </Button>

@@ -5,12 +5,14 @@ import { JSX, SVGProps, useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import axios from "axios"
 import Loading from "./loading"
-import { encryptRunServerMode } from "@/lib/litHelper"
+import { useRouter } from "next/navigation"
+// import { encryptRunServerMode } from "@/lib/litHelper"
 
 export default function Dashboard() {
 
   const [uploading, setUploading] = useState(false)
   const [encrypting, setEncrypting] = useState(false)
+  const router = useRouter();
 
   const onDrop = useCallback(async (acceptedFiles) => {
 
@@ -37,74 +39,77 @@ export default function Dashboard() {
           headers: {
             'Content-Type': `multipart/form-data`,
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
-          }
+            }
         });
 
         setUploading(false);
+        router.push("/dashboard")
         setEncrypting(true);
 
         const message = res.data.IpfsHash;
         console.log(message);
 
-        // const uploadformData = new FormData();
+        const uploadformData = new FormData();
 
-        // uploadformData.append('file', acceptedFiles[0]);
+        uploadformData.append('file', acceptedFiles[0]);
 
-        // const uploadRes = await axios.post("/api/upload", formData, {
-        //   headers: {
-        //     'Content-Type': `multipart/form-data`,
-        //   }
-        // });
+        const uploadRes = await axios.post("/api/upload", formData, {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+          }
+        });
 
-        // if(uploadRes.status === 200) {
+        if(uploadRes.status === 200) {
 
-        // }
+        }
 
         const { ciphertext, dataToEncryptHash } = await encryptRunServerMode(message)
 
-        // const encryptRes = await axios.post("/api/encrypt", {
-        //   dataCid: res.data.IpfsHash
-        // });
+        const encryptRes = await axios.post("/api/encrypt", {
+          dataCid: res.data.IpfsHash
+        });
         console.log(ciphertext, dataToEncryptHash);
 
         setEncrypting(false);
 
-        // const data = {
-        //   name: acceptedFiles[0].name,
-        //   hash: res.data.IpfsHash,
-        //   size: res.data.PinSize
-        // }
+        const data = {
+          name: acceptedFiles[0].name,
+          hash: res.data.IpfsHash,
+          size: res.data.PinSize
+        }
 
-        // const jsonData = JSON.stringify(data);
+        const jsonData = JSON.stringify(data);
 
-        // const blob = new Blob([jsonData], { type: 'application/json' });
+        const blob = new Blob([jsonData], { type: 'application/json' });
 
-        // const metadataformData = new FormData();
+        const metadataformData = new FormData();
 
-        // const pinataOptions = JSON.stringify({
-        //   cidVersion: 0,
-        // })
+        const pinataOptions = JSON.stringify({
+          cidVersion: 0,
+        })
 
-        // metadataformData.append('pinataOptions', pinataOptions);
-        // metadataformData.append('file', blob);
+        metadataformData.append('pinataOptions', pinataOptions);
+        metadataformData.append('file', blob);
 
-        // const pinataMetadata = JSON.stringify({
-        //   name: acceptedFiles[0].name + ` metadata`,
-        // });
-        // metadataformData.append('pinataMetadata', pinataMetadata);
+        const pinataMetadata = JSON.stringify({
+          name: acceptedFiles[0].name + ` metadata`,
+        });
+        metadataformData.append('pinataMetadata', pinataMetadata);
 
-        // const metadataRes = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", metadataformData, {
-        //   headers: {
-        //     'Content-Type': `multipart/form-data`,
-        //     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
-        //   }
-        // });
+        const metadataRes = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", metadataformData, {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
+          }
+        });
 
-        // console.log(metadataRes);
+        console.log(metadataRes);
 
       } catch (error) {
         console.log(error);
         setEncrypting(false);
+        router.push("/dashboard")
+
       }
     }
 
@@ -119,7 +124,7 @@ export default function Dashboard() {
       <div className="space-y-6">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">Dataset</h1>
-          <p className="text-gray-500 dark:text-gray-400">Upload your dataset here</p>
+          <p className="text-gray-500 dark:text-gray-400">Upload your dataset here (upload a metadata.json and dataset file which can be zip or csv)</p>
         </div>
         <div className="space-y-4">
           <div className="space-y-2">
