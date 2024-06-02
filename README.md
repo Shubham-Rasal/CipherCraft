@@ -2,6 +2,14 @@
 # CipherCraft
 ![image](https://github.com/Shubham-Rasal/CipherCraft/assets/95695273/d0000318-42ca-46bb-8441-3822b9e39761)
 
+![image](https://github.com/Shubham-Rasal/CipherCraft/assets/95695273/a31201b5-8c86-48c7-b4c5-568aef061d77)
+
+![image](https://github.com/Shubham-Rasal/CipherCraft/assets/95695273/2f33658c-bdb6-4238-8a46-21fe2821fb86)
+
+![image](https://github.com/Shubham-Rasal/CipherCraft/assets/95695273/b41e504b-9054-4929-9017-14b65628fdd1)
+
+
+
 
 A Decentralised Hub for federated model training on access controlled private datasets.
 
