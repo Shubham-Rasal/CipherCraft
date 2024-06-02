@@ -40,68 +40,68 @@ export default function Dashboard() {
           }
         });
 
-        setUploading(false);
-        setEncrypting(true);
-
         const message = res.data.IpfsHash;
         console.log(message);
 
-        // const uploadformData = new FormData();
+        const uploadformData = new FormData();
 
-        // uploadformData.append('file', acceptedFiles[0]);
+        uploadformData.append('file', acceptedFiles[0]);
 
-        // const uploadRes = await axios.post("/api/upload", formData, {
-        //   headers: {
-        //     'Content-Type': `multipart/form-data`,
-        //   }
-        // });
+        const uploadRes = await axios.post("/api/upload", formData, {
+          headers: {
+            'Content-Type': `multipart/form-data`,
+          }
+        });
 
-        // if(uploadRes.status === 200) {
+        if (uploadRes.status === 200) {
+          console.log(uploadRes.data)
 
-        // }
+          // const encryptRes = await axios.post("/api/encrypt", {
+          //   dataCid: res.data.IpfsHash
+          // });
 
-        const { ciphertext, dataToEncryptHash } = await encryptRunServerMode(message)
+          const data = {
+            name: acceptedFiles[0].name,
+            hash: res.data.IpfsHash,
+            size: res.data.PinSize,
+            columns: uploadRes.data.columnNames,
+            firstFiveRows: uploadRes.data.firstFiveRows
+          }
 
-        // const encryptRes = await axios.post("/api/encrypt", {
-        //   dataCid: res.data.IpfsHash
-        // });
-        console.log(ciphertext, dataToEncryptHash);
+          const jsonData = JSON.stringify(data);
 
-        setEncrypting(false);
+          const blob = new Blob([jsonData], { type: 'application/json' });
 
-        // const data = {
-        //   name: acceptedFiles[0].name,
-        //   hash: res.data.IpfsHash,
-        //   size: res.data.PinSize
-        // }
+          const metadataformData = new FormData();
 
-        // const jsonData = JSON.stringify(data);
+          const pinataOptions = JSON.stringify({
+            cidVersion: 0,
+          })
 
-        // const blob = new Blob([jsonData], { type: 'application/json' });
+          metadataformData.append('pinataOptions', pinataOptions);
+          metadataformData.append('file', blob);
 
-        // const metadataformData = new FormData();
+          const pinataMetadata = JSON.stringify({
+            name: acceptedFiles[0].name + ` metadata`,
+          });
+          metadataformData.append('pinataMetadata', pinataMetadata);
 
-        // const pinataOptions = JSON.stringify({
-        //   cidVersion: 0,
-        // })
+          const metadataRes = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", metadataformData, {
+            headers: {
+              'Content-Type': `multipart/form-data`,
+              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
+            }
+          });
 
-        // metadataformData.append('pinataOptions', pinataOptions);
-        // metadataformData.append('file', blob);
+          console.log(metadataRes);
 
-        // const pinataMetadata = JSON.stringify({
-        //   name: acceptedFiles[0].name + ` metadata`,
-        // });
-        // metadataformData.append('pinataMetadata', pinataMetadata);
+          setUploading(false);
+          setEncrypting(true);
 
-        // const metadataRes = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", metadataformData, {
-        //   headers: {
-        //     'Content-Type': `multipart/form-data`,
-        //     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
-        //   }
-        // });
+          const { ciphertext, dataToEncryptHash } = await encryptRunServerMode(metadataRes.data.IpfsHash);
 
-        // console.log(metadataRes);
-
+          setEncrypting(false);
+        }
       } catch (error) {
         console.log(error);
         setEncrypting(false);

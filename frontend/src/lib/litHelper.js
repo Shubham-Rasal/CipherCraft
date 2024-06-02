@@ -156,7 +156,7 @@ export class Lit {
 
 export const encryptRunServerMode = async (message) => {
     const client = new LitJsSdk.LitNodeClient({
-        litNetwork: LitNetwork.LIT_NETWORKS.cayenne,
+        litNetwork: LitNetwork.LitNetwork.Cayenne,
         debug: true,
     });
 
