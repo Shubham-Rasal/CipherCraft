@@ -1,4 +1,6 @@
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { DatabaseIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function SidebarLayout({
@@ -8,16 +10,24 @@ export default function SidebarLayout({
 }>) {
   return (
     <div className="flex min-h-screen w-full">
-      <div className="bg-gray-900 text-white p-6 hidden md:block w-64 shrink-0">
-        <div className="space-y-4">
-          <Link
-            href="#"
-            className="flex items-center gap-2 font-bold text-lg"
-            prefetch={false}
-          >
-            <Grid3x3Icon className="w-6 h-6" />
-            <span>CipherCraft</span>
-          </Link>
+      <div className="bg-gray-900 text-white p-6 h-screen md:block w-64 shrink-0 flex flex-col justify-between">
+        <div className="space-y-4  ">
+          <div className="bg-white text-gray-900">
+            <Link
+              href="#"
+              className="flex items-center gap-2 font-bold text-lg"
+              prefetch={false}
+            >
+              <Image
+                className="w-8 h-8"
+                src={"/logo.jpg"}
+                alt="logo"
+                width={100}
+                height={100}
+              />
+              <span>CipherCraft</span>
+            </Link>
+          </div>
           <nav className="space-y-2">
             <Link
               href="/dashboard"
